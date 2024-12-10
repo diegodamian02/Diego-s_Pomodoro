@@ -37,7 +37,7 @@ function Timer() {
     // Log event to backed
     const logEvent = (event, mode, duration) => {
         axios
-            .post("http://127.0.0.1:5000/log", {
+            .post(`${process.env.REACT_APP_API_BASE_URL}/log`, {
                 event,
                 mode,
                 duration

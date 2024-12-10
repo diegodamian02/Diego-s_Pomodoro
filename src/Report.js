@@ -8,7 +8,7 @@ function Report(){
 
     // Fetch logs from the backend
     useEffect(() => {
-        axios.get('http://127.0.0.1:5000/logs')
+        axios.get(process.env.REACT_APP_API_BASE_URL + '/logs')
             .then((response) => {
                 console.log("Fetched logs:", response.data.logs);
                 setLogs(response.data.logs || []);
