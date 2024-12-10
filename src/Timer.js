@@ -24,7 +24,7 @@ function Timer() {
                     return WORK_TIME;
             }
         },
-        [mode] // Include 'mode' as a dependency
+        [WORK_TIME, SHORT_BREAK, LONG_BREAK, mode] // Include 'mode' as a dependency
     );
 
 
