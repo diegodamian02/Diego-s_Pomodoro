@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import './Timer.css'
 
@@ -11,6 +11,21 @@ function Timer() {
     const [timeLeft, setTimeLeft] = useState(WORK_TIME); //25 minutes
     const [isRunning, setIsRunning] = useState(false);
     const [mode, setMode] = useState('Work'); // Modes: 'Work', 'Short Break', 'Long Break'
+    const getTimeForMode = useCallback(
+        (modeType = mode) => {
+            switch (modeType) {
+                case "Work":
+                    return WORK_TIME;
+                case "Short Break":
+                    return SHORT_BREAK;
+                case "Long Break":
+                    return LONG_BREAK;
+                default:
+                    return WORK_TIME;
+            }
+        },
+        [mode] // Include 'mode' as a dependency
+    );
 
 
     useEffect(() => {
@@ -32,7 +47,7 @@ function Timer() {
 
     // Clean up interval on component amount unmount or when stopped timer
         return () => clearInterval(timerInterval);
-    }, [isRunning, timeLeft]);
+    }, [isRunning, timeLeft, mode, getTimeForMode]);
 
     // Log event to backed
     const logEvent = (event, mode, duration) => {
@@ -68,19 +83,6 @@ function Timer() {
         setMode(newMode);
         setIsRunning(false); // Stop timer when switching
         setTimeLeft(getTimeForMode(newMode)); // Set new Time mode
-    };
-
-    const getTimeForMode = (modeType = mode) => {
-        switch (modeType) {
-            case 'Work':
-                return WORK_TIME;
-            case 'Short Break':
-                return SHORT_BREAK;
-            case 'Long Break':
-                return LONG_BREAK;
-            default:
-                return WORK_TIME;
-        }
     };
 
     // Convert timeLeft to minutes and seconds for display
