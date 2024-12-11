@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import axios from "axios";
+import api from './api';
 import './Report.css';
 
 function Report(){
@@ -8,7 +8,7 @@ function Report(){
 
     // Fetch logs from the backend
     useEffect(() => {
-        axios.get(process.env.REACT_APP_API_BASE_URL + '/logs')
+        api.get('/logs')
             .then((response) => {
                 console.log("Fetched logs:", response.data.logs);
                 setLogs(response.data.logs || []);
