@@ -3,7 +3,7 @@ from flask_cors import CORS
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:3000", "http://localhost:3000","https://diegospomodoro.com/"]}})
+CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:3000", "http://localhost:3000","https://diegospomodoro.com/", "https://diegospomodoro.netlify.app/"]}})
 
 #Log file path
 
