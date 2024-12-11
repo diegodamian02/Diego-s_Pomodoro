@@ -1,6 +1,10 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from datetime import datetime
+import pytz
+
+#US East Coast hour
+LOCAL_TIMEZONE = pytz.timezone('US/Eastern')
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:3000", "http://localhost:3000","https://diegospomodoro.com", "https://diegospomodoro.netlify.app"]}})
@@ -31,7 +35,7 @@ def log():
     seconds = duration % 60
 
     # timestamp for when the log is recorded
-    timestamp = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
+    timestamp = datetime.now(LOCAL_TIMEZONE).strftime("%m/%d/%Y %H:%M:%S")
 
     # Format log entry
     log_entry = f"Timestamp: {timestamp}, Event: {event}, Mode: {mode}, Duration: {minutes}m {seconds}s\n"
