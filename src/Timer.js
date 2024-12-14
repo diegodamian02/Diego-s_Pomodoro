@@ -11,6 +11,8 @@ function Timer() {
     const [timeLeft, setTimeLeft] = useState(WORK_TIME); //25 minutes
     const [isRunning, setIsRunning] = useState(false);
     const [mode, setMode] = useState('Work'); // Modes: 'Work', 'Short Break', 'Long Break'
+
+    const buttonSound = new Audio('/Sound/button.mp3')
     const getTimeForMode = useCallback(
         (modeType = mode) => {
             switch (modeType) {
@@ -65,16 +67,19 @@ function Timer() {
 
     const startTimer = () => {
     setIsRunning(true); //Start timer
+        buttonSound.play();
     };
 
     const stopTimer = () => {
         setIsRunning(false); // Stop timer
+        buttonSound.play();
         logEvent("Timer Stopped", mode, timeLeft);
     };
 
     const resetTimer = () => {
         setIsRunning(false); //Stop Timer
         logEvent("Timer Reset", mode, getTimeForMode(mode));
+        buttonSound.play();
         setTimeLeft(getTimeForMode(mode)) //Reset to the selected time
     };
 
