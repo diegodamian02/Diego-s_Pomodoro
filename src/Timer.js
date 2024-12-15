@@ -52,14 +52,16 @@ function Timer() {
             const elapsed = Math.floor((Date.now() - startTime) / 1000);
             const remainingTime = Math.max(getTimeForMode(mode) - elapsed, 0);
             setTimeLeft(remainingTime);
-            if (timeLeft === 0) {
+            if (remainingTime === 0) {
                 // Stop the tier if the time has run out
                 clearInterval(timerInterval);
                 setIsRunning(false);
                 timerCompleted.play();
                 logEvent("Times Up", mode, getTimeForMode(mode))
                 setTimeLeft(getTimeForMode(mode))
-                alert("Time's up!");
+                setTimeout( () => {
+                    alert("Time's up!");
+                }, 0);
             }
         }, 1000);
     }
