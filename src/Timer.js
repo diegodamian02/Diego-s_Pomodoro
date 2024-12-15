@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState, useMemo} from "react";
 import axios from "axios";
 import './Timer.css'
 
@@ -24,7 +24,7 @@ function Timer() {
     })
 
     const buttonSound =  new Audio('/Sound/button.mp3');
-    const timerCompleted = new Audio('/Sound/alarm.mp3');
+    const timerCompleted = useMemo(() => new Audio('/Sound/alarm.mp3'), []);
 
     const getTimeForMode = useCallback(
         (modeType = mode) => {
@@ -66,7 +66,7 @@ function Timer() {
 
     // Clean up interval on component amount unmount or when stopped timer
         return () => clearInterval(timerInterval);
-    }, [isRunning, timeLeft, mode, getTimeForMode, timerCompleted, startTime]);
+    }, [isRunning, timeLeft, mode, getTimeForMode, timerCompleted]);
 
     useEffect(() => {
         // Save the current state to localStorage
