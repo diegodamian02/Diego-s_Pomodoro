@@ -99,15 +99,14 @@ function Timer({userID}) {
             setTimeLeft(WORK_TIME);
             setIsRunning(false);
             setMode("Work");
-            localStorage.clear();
-
-            setTimeout(() => {
-                console.log("Logs cleared locally.")
-            }, 0);
+            localStorage.removeItem("timeLeft");
+            localStorage.removeItem("isRunning");
+            localStorage.removeItem("mode");
+            localStorage.removeItem("startTime");
 
             // Clear activity logs on the backend
             axios
-                .delete(`${process.env.REACT_APP_API_BASE_URL}/logs`)
+                .delete(`${process.env.REACT_APP_API_BASE_URL}/logs`, {params: {userID}})
                 .then(() => console.log("Activity log cleared on reload."))
                 .catch((error) => console.error("Error clearing logs:", error));
         };
@@ -117,7 +116,7 @@ function Timer({userID}) {
         return () => {
             window.removeEventListener("beforeunload", resetTimerOnReload);
         };
-    }, [WORK_TIME]);
+    }, [WORK_TIME, userID]);
 
 
     //Start the timer
@@ -147,7 +146,7 @@ function Timer({userID}) {
         setMode(newMode);
         setIsRunning(false); // Stop timer when switching
         setTimeLeft(getTimeForMode(newMode)); // Set new Time mode
-        localStorage.setItem("mode", mode)
+        localStorage.setItem("mode", newMode)
     };
 
     // Convert timeLeft to minutes and seconds for display
