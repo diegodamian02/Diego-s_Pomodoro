@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from datetime import datetime
 import pytz
+import os
 
 #US East Coast hour
 LOCAL_TIMEZONE = pytz.timezone('US/Eastern')
@@ -12,8 +13,10 @@ CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:3000", "http://localh
 #Memmory log storage
 LOGS = {}
 
-LOG_FILE = "timer_log.txt"
-file_cleared = False
+LOGS_DIR = 'logs'
+if not os.path.exists(LOGS_DIR):
+    os.makedirs(LOGS_DIR)
+
 
 
 # Route for logging timer data
@@ -39,15 +42,10 @@ def log():
     log_entry = f"Timestamp: {timestamp}, Event: {event}, Mode: {mode}, Duration: {minutes}m {seconds}s\n"
 
     #File path for the user's logs
-    user_log_file = f"logs_{user_id}.txt"
+    user_log_file = os.path.join(LOGS_DIR, f"{user_id}.txt")
     # Append log entry to file
     with open(user_log_file, 'a') as f:
         f.write(log_entry)
-
-    #Store the log in memory
-    if user_id not in LOGS:
-        LOGS[user_id] = []
-    LOGS[user_id].append(log_entry)
 
     return jsonify({"message": "successfully recorded"}), 200
 
@@ -61,28 +59,33 @@ def get_logs():
         return jsonify({"error": "userID is missing"}), 400
 
     #retrieve logs for the given userID
-    user_logs = LOGS.get(user_id, [])
+    user_logs = os.path.join(LOGS_DIR, f"{user_id}.txt")
+
+    #Read logs for the given userID
+    if os.path.exists(user_logs):
+        with open(user_logs, 'r') as f:
+            user_logs = [line.strip() for line in f.readlines()]
+
+    else:
+        user_logs = []
 
     return jsonify({"logs": user_logs}), 200
 
-    '''
-    print("Received GET request at /logs")
-    logs = []
-    try:
-        with open(LOG_FILE, 'r') as f:
-            for line in f:
-                if line.strip():
-                    logs.append(line.strip())
-    except FileNotFoundError:
-        return jsonify({"logs": []}), 200  # Respond with an empty log list
 
-    print(f"Returning logs: {logs}")
-    return jsonify({"logs": logs}), 200
-    
-    '''
+@app.route('/logs', methods=['DELETE'])
+def clear_logs():
+    user_id = request.args.get("userID")
 
+    if not user_id:
+        return jsonify({"error": "userID is missing"}), 400
 
-# We are going to get the logs whenever the user stops, resets or finished the timer
+    # File path for the user's logs
+    user_log_file = os.path.join(LOGS_DIR, f"{user_id}.txt")
+
+    if os.path.exists(user_log_file):
+        os.remove(user_log_file)
+
+    return jsonify({"logs": "Activity log cleared"}), 200
 
 @app.route('/timer', methods=['GET', 'POST'])
 def timer():
@@ -92,13 +95,3 @@ def timer():
 if __name__ == '__main__':
 
     app.run(host='0.0.0.0', port=5000, debug=True)
-
-@app.route('/logs', methods=['DELETE'])
-def clear_logs():
-    user_id = request.args.get("userID")
-
-    if not user_id:
-        return jsonify({"error": "userID is missing"}), 400
-    #Clear logs for the given userID
-    LOGS.pop(user_id, None)
-    return jsonify({"logs": "Activity log cleared"}), 200

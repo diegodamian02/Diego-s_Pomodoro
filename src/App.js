@@ -13,7 +13,6 @@ function App() {
 
     useEffect(() => {
         let storedUserId = localStorage.getItem("userID");
-
         if (!storedUserId) {
             storedUserId = uuidv4();
             localStorage.setItem("userID", storedUserId);
