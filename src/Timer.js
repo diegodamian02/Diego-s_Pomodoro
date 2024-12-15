@@ -66,7 +66,7 @@ function Timer() {
 
     // Clean up interval on component amount unmount or when stopped timer
         return () => clearInterval(timerInterval);
-    }, [isRunning, timeLeft, mode, getTimeForMode]);
+    }, [isRunning, timeLeft, mode, getTimeForMode, timerCompleted]);
 
     useEffect(() => {
         // Save the current state to localStorage
