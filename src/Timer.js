@@ -87,6 +87,10 @@ function Timer() {
             setMode("Work");
             localStorage.clear();
 
+            setTimeout(() => {
+                console.log("Logs cleared locally.")
+            }, 0);
+            
             // Clear activity logs on the backend
             axios
                 .delete(`${process.env.REACT_APP_API_BASE_URL}/logs`)
