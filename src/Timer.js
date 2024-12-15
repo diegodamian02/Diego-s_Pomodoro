@@ -42,21 +42,7 @@ function Timer() {
         [WORK_TIME, SHORT_BREAK, LONG_BREAK, mode] // Include 'mode' as a dependency
     );
 
-    // Reset the timer and clear the activity log on page reload
-    useEffect(() => {
-        // Reset timer values
-        setTimeLeft(WORK_TIME);
-        setIsRunning(false);
-        setMode("Work");
-        
-        localStorage.clear();
-
-        axios
-            .delete(`${process.env.REACT_APP_API_BASE_URL}/logs`)
-            .then(() => console.log("Activity log cleared."))
-            .catch((error) => console.error("Error clearing activity log:", error));
-    }, [WORK_TIME]);
-
+    //Counter for the timer.
     useEffect(() => {
     let timerInterval = null;
 
@@ -91,6 +77,29 @@ function Timer() {
         localStorage.setItem("mode", mode);
         localStorage.setItem("startTime", startTime);
     }, [timeLeft, isRunning, mode, startTime]);
+
+    // Delete logs ONLY when website is refreshed.
+    useEffect(() => {
+        const resetTimerOnReload = () => {
+            // Reset timer state
+            setTimeLeft(WORK_TIME);
+            setIsRunning(false);
+            setMode("Work");
+            localStorage.clear();
+
+            // Clear activity logs on the backend
+            axios
+                .delete(`${process.env.REACT_APP_API_BASE_URL}/logs`)
+                .then(() => console.log("Activity log cleared on reload."))
+                .catch((error) => console.error("Error clearing logs:", error));
+        };
+
+        window.addEventListener("beforeunload", resetTimerOnReload);
+
+        return () => {
+            window.removeEventListener("beforeunload", resetTimerOnReload);
+        };
+    }, [WORK_TIME]);
 
     // Log event to backed
     const logEvent = (event, mode, duration) => {
