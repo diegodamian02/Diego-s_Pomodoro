@@ -73,3 +73,11 @@ def timer():
 if __name__ == '__main__':
 
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+@app.route('/logs', methods=['DELETE'])
+def clear_logs():
+    try:
+        open(LOG_FILE, 'w').close()
+        return jsonify({"message": "Activity log cleared successfully."}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

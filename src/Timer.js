@@ -42,6 +42,20 @@ function Timer() {
         [WORK_TIME, SHORT_BREAK, LONG_BREAK, mode] // Include 'mode' as a dependency
     );
 
+    // Reset the timer and clear the activity log on page reload
+    useEffect(() => {
+        // Reset timer values
+        setTimeLeft(WORK_TIME);
+        setIsRunning(false);
+        setMode("Work");
+        
+        localStorage.clear();
+
+        axios
+            .delete(`${process.env.REACT_APP_API_BASE_URL}/logs`)
+            .then(() => console.log("Activity log cleared."))
+            .catch((error) => console.error("Error clearing activity log:", error));
+    }, [WORK_TIME]);
 
     useEffect(() => {
     let timerInterval = null;
