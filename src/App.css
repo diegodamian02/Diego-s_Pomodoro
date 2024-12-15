@@ -25,6 +25,7 @@
 .content {
   margin-top: 200px;
   padding: 20px;
+  margin-bottom: 50px;
 }
 
 .table-container {
@@ -68,6 +69,22 @@
   pointer-events: none;
 }
 
+.footer {
+  background-color: #333259;
+  color: white;
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -96,4 +113,30 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+@media (max-width: 768px) {
+  .App {
+    padding: 10px;
+  }
+
+  .header{
+    padding: 10px 0;
+    font-size: 18px;
+  }
+
+  .content {
+    margin-top: 120px;
+    padding: 10px;
+  }
+
+  .footer {
+    font-size: 12px;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+  }
+
+
+
 }

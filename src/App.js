@@ -1,10 +1,13 @@
 import React, {useState} from 'react';
-import Timer from './Timer'; // Import the Timer component
+import Timer from './Timer';
 import './App.css';
-import Report from "./Report"; // Import CSS for styling
+import Report from "./Report";
 
 function App() {
     const [view, setView] = useState('Timer'); // "Timer" or "Report"
+    const [timeLeft, setTimeLeft] = useState(25*60);
+    const [isRunning, setIsRunning] = useState(false)
+    const [mode, setMode] = useState("Work");
 
     return (
         <div className="App">
@@ -16,8 +19,25 @@ function App() {
                 </div>
             </header>
             <main className="content">
-            {view === 'Timer' ? <Timer />  : <Report />}
+                {view === "Timer" ? (
+                    <Timer
+                        timeLeft={timeLeft}
+                        setTimeLeft={setTimeLeft}
+                        isRunning={isRunning}
+                        setIsRunning={setIsRunning}
+                        mode={mode}
+                        setMode={setMode}
+                    />
+                ) : (
+                    <Report/>
+                )}
             </main>
+            <footer className="footer">
+                <p>
+                    Alarm sound is a musical piece I composed for my class <em>Scoring Film Media</em>. I hope you liked
+                    it!
+                </p>
+            </footer>
 
         </div>
     );

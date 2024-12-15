@@ -93,3 +93,48 @@ div {
     color: white;
     font-weight: bold;
 }
+
+@media (max-width: 768px) {
+    .timer-display{
+        font-size: 70px;
+        margin: 15px auto;
+        text-align: center;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 350px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+    }
+
+    h1 {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .tabs{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .tabs button {
+        font-size: 15px;
+        padding: 10px 15px;
+        margin: 0 5px;
+    }
+
+    .button-group {
+        display: flex;
+        padding: 10px 15px;
+        text-align: center;
+        font-size: 15px;
+    }
+
+
+
+}

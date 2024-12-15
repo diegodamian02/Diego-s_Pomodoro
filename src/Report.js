@@ -69,7 +69,8 @@ function Report(){
 
                         // Calculate the elapsed time
 
-                        const elapsedTimeSeconds = Math.abs(targetDuration- totalDurationInSeconds)
+                        const elapsedTimeSeconds = totalDurationInSeconds > 0 ? Math.abs(targetDuration- totalDurationInSeconds)
+                            : targetDuration;
 
 
                         //Format elapsed time

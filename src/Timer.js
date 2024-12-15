@@ -8,11 +8,24 @@ function Timer() {
     const WORK_TIME = 25 * 60; // 25 minutes
     const SHORT_BREAK = 5 * 60; // 5 minutes
     const LONG_BREAK = 15 * 60 // 15 minutes
-    const [timeLeft, setTimeLeft] = useState(WORK_TIME); //25 minutes
-    const [isRunning, setIsRunning] = useState(false);
-    const [mode, setMode] = useState('Work'); // Modes: 'Work', 'Short Break', 'Long Break'
+    const [timeLeft, setTimeLeft] = useState(() => {
+        const savedTime = localStorage.getItem("timeLeft");
+        return savedTime !== null ? parseInt(savedTime, 10) : WORK_TIME;
+    }); //25 minutes
+    const [isRunning, setIsRunning] = useState(() => {
+        return JSON.parse(localStorage.getItem("isRunning")) || false;
+    });
+    const [mode, setMode] = useState(() => {
+        return localStorage.getItem("mode") || "Work";
+    }); // Modes: 'Work', 'Short Break', 'Long Break'
 
-    const buttonSound = new Audio('/Sound/button.mp3')
+    const [startTime, setStartTime] = useState(() => {
+        return parseInt(localStorage.getItem("startTime"), 10) || Date.now();
+    })
+
+    const buttonSound =  new Audio('/Sound/button.mp3');
+    const timerCompleted = new Audio('/Sound/alarm.mp3');
+
     const getTimeForMode = useCallback(
         (modeType = mode) => {
             switch (modeType) {
@@ -33,23 +46,35 @@ function Timer() {
     useEffect(() => {
     let timerInterval = null;
 
-    if(isRunning && timeLeft > 0){
+    if(isRunning) {
         // Start interval that counts down every second
         timerInterval = setInterval(() => {
-            setTimeLeft((prevTime) => prevTime -1);
-            }, 1000);
-    } else if (timeLeft === 0){
-        // Stop the tier if the time has run out
-
-        clearInterval(timerInterval);
-        setIsRunning(false);
-        logEvent("Times Up", mode, getTimeForMode(mode))
-        alert("Time's up!");
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const remainingTime = Math.max(getTimeForMode(mode) - elapsed, 0);
+            setTimeLeft(remainingTime);
+            if (timeLeft === 0) {
+                // Stop the tier if the time has run out
+                clearInterval(timerInterval);
+                setIsRunning(false);
+                timerCompleted.play();
+                logEvent("Times Up", mode, getTimeForMode(mode))
+                setTimeLeft(getTimeForMode(mode))
+                alert("Time's up!");
+            }
+        }, 1000);
     }
 
     // Clean up interval on component amount unmount or when stopped timer
         return () => clearInterval(timerInterval);
     }, [isRunning, timeLeft, mode, getTimeForMode]);
+
+    useEffect(() => {
+        // Save the current state to localStorage
+        localStorage.setItem("timeLeft", timeLeft);
+        localStorage.setItem("isRunning", isRunning);
+        localStorage.setItem("mode", mode);
+        localStorage.setItem("startTime", startTime);
+    }, [timeLeft, isRunning, mode, startTime]);
 
     // Log event to backed
     const logEvent = (event, mode, duration) => {
@@ -66,7 +91,8 @@ function Timer() {
     //Start the timer
 
     const startTimer = () => {
-    setIsRunning(true); //Start timer
+        setIsRunning(true); //Start timer
+        setStartTime(Date.now() - (getTimeForMode(mode) - timeLeft) * 1000);
         buttonSound.play();
     };
 
@@ -78,9 +104,10 @@ function Timer() {
 
     const resetTimer = () => {
         setIsRunning(false); //Stop Timer
-        logEvent("Timer Reset", mode, getTimeForMode(mode));
-        buttonSound.play();
         setTimeLeft(getTimeForMode(mode)) //Reset to the selected time
+        buttonSound.play();
+        timerCompleted.pause()
+        logEvent("Timer Reset", mode, getTimeForMode(mode));
     };
 
     // Set the time based on the selected mode
@@ -88,6 +115,7 @@ function Timer() {
         setMode(newMode);
         setIsRunning(false); // Stop timer when switching
         setTimeLeft(getTimeForMode(newMode)); // Set new Time mode
+        localStorage.setItem("mode", mode)
     };
 
     // Convert timeLeft to minutes and seconds for display
