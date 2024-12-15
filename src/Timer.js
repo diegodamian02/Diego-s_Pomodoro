@@ -42,6 +42,20 @@ function Timer({userID}) {
         [WORK_TIME, SHORT_BREAK, LONG_BREAK, mode] // Include 'mode' as a dependency
     );
 
+    // Log event to backed
+    const logEvent = useCallback((event, mode, duration) => {
+        if (!userID) return;
+        axios
+            .post(`${process.env.REACT_APP_API_BASE_URL}/log`, {
+                userID,
+                event,
+                mode,
+                duration
+            })
+            .then((response) => console.log(response.data.message))
+            .catch((error) => console.error("Error logging event:", error));
+    }, [userID]);
+
     //Counter for the timer.
     useEffect(() => {
     let timerInterval = null;
@@ -68,7 +82,7 @@ function Timer({userID}) {
 
     // Clean up interval on component amount unmount or when stopped timer
         return () => clearInterval(timerInterval);
-    }, [isRunning, timeLeft, mode, getTimeForMode, timerCompleted, startTime]);
+    }, [isRunning, timeLeft, mode, getTimeForMode, timerCompleted, startTime, logEvent]);
 
     useEffect(() => {
         // Save the current state to localStorage
@@ -105,19 +119,6 @@ function Timer({userID}) {
         };
     }, [WORK_TIME]);
 
-    // Log event to backed
-    const logEvent = (event, mode, duration) => {
-        if (!userID) return;
-        axios
-            .post(`${process.env.REACT_APP_API_BASE_URL}/log`, {
-                userID,
-                event,
-                mode,
-                duration
-            })
-            .then((response) => console.log(response.data.message))
-            .catch((error) => console.error("Error logging event:", error));
-    };
 
     //Start the timer
 
