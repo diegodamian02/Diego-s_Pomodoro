@@ -3,7 +3,7 @@ import axios from "axios";
 import './Timer.css'
 
 
-function Timer() {
+function Timer({userID}) {
 
     const WORK_TIME = 25 * 60; // 25 minutes
     const SHORT_BREAK = 5 * 60; // 5 minutes
@@ -90,7 +90,7 @@ function Timer() {
             setTimeout(() => {
                 console.log("Logs cleared locally.")
             }, 0);
-            
+
             // Clear activity logs on the backend
             axios
                 .delete(`${process.env.REACT_APP_API_BASE_URL}/logs`)
@@ -107,8 +107,10 @@ function Timer() {
 
     // Log event to backed
     const logEvent = (event, mode, duration) => {
+        if (!userID) return;
         axios
             .post(`${process.env.REACT_APP_API_BASE_URL}/log`, {
+                userID,
                 event,
                 mode,
                 duration

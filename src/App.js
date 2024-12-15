@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import { v4 as uuidv4} from "uuid";
 import Timer from './Timer';
 import './App.css';
 import Report from "./Report";
@@ -8,6 +9,18 @@ function App() {
     const [timeLeft, setTimeLeft] = useState(25*60);
     const [isRunning, setIsRunning] = useState(false)
     const [mode, setMode] = useState("Work");
+    const [userID, setUserID] = useState(null);
+
+    useEffect(() => {
+        let storedUserId = localStorage.getItem("userID");
+
+        if (!storedUserId) {
+            storedUserId = uuidv4();
+            localStorage.setItem("userID", storedUserId);
+        }
+        setUserID(storedUserId);
+        console.log("User ID:", storedUserId);
+    }, []);
 
     return (
         <div className="App">
@@ -27,9 +40,10 @@ function App() {
                         setIsRunning={setIsRunning}
                         mode={mode}
                         setMode={setMode}
+                        userID={userID}
                     />
                 ) : (
-                    <Report/>
+                    <Report userID={userID}/>
                 )}
             </main>
             <footer className="footer">

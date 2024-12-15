@@ -2,16 +2,19 @@ import React, { useState, useEffect} from "react";
 import api from './api';
 import './Report.css';
 
-function Report(){
+function Report({userID}){
     const [logs, setLogs] = useState([]);
     const [error, setError] = useState(null);
 
 
     // Fetch logs from the backend
     useEffect(() => {
+        if (!userID) return;
         const fetchLogs = async () => {
             try {
-                const response = await api.get('/logs'); // Make GET request to '/logs'
+                const response = await api.get('/logs', {
+                    params: {userID}
+                }); // Make GET request to '/logs'
                 console.log("Fetched logs:", response.data.logs);
                 setLogs(response.data.logs || []); // Set logs or empty array
             } catch (err) {
@@ -21,7 +24,7 @@ function Report(){
         };
 
         fetchLogs();
-    }, []);
+    }, [userID]);
     return (
         <div className="table-container">
             <h2>Activity Log</h2>
