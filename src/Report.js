@@ -12,10 +12,9 @@ function Report({userID}){
         if (!userID) return;
         const fetchLogs = async () => {
             try {
-                const response = await api.get('/logs', {
+                const response = await api.get(`${process.env.REACT_APP_API_BASE_URL}/logs`, {
                     params: {userID}
                 }); // Make GET request to '/logs'
-                console.log("Fetched logs:", response.data.logs);
                 setLogs(response.data.logs || []); // Set logs or empty array
             } catch (err) {
                 console.error("Error fetching logs:", err);

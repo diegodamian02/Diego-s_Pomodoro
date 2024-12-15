@@ -94,16 +94,8 @@ function Timer({userID}) {
 
     // Delete logs ONLY when website is refreshed.
     useEffect(() => {
-        const resetTimerOnReload = () => {
-            // Reset timer state
-            setTimeLeft(WORK_TIME);
-            setIsRunning(false);
-            setMode("Work");
-            localStorage.removeItem("timeLeft");
-            localStorage.removeItem("isRunning");
-            localStorage.removeItem("mode");
-            localStorage.removeItem("startTime");
-
+        const clearLogsOnReload = () => {
+            if (!userID) return;
             // Clear activity logs on the backend
             axios
                 .delete(`${process.env.REACT_APP_API_BASE_URL}/logs`, {params: {userID}})
@@ -111,12 +103,12 @@ function Timer({userID}) {
                 .catch((error) => console.error("Error clearing logs:", error));
         };
 
-        window.addEventListener("beforeunload", resetTimerOnReload);
+        window.addEventListener("beforeunload", clearLogsOnReload);
 
         return () => {
-            window.removeEventListener("beforeunload", resetTimerOnReload);
+            window.removeEventListener("beforeunload", clearLogsOnReload);
         };
-    }, [WORK_TIME, userID]);
+    }, [userID]);
 
 
     //Start the timer
