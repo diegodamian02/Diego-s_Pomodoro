@@ -48,7 +48,7 @@ function App() {
             <footer className="footer">
                 <p>
 
-                    The alarm sound is melody titled <em>Sonata di Fantaisie</em>, a piece I composed for my <em>Scoring Film Media</em> class. I hope you enjoy
+                    The alarm sound is a melody titled <em>Sonata di Fantaisie</em>, a piece I composed for my <em>Scoring Film Media</em> class. I hope you enjoy
                     it!
                 </p>
             </footer>

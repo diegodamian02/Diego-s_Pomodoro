@@ -90,7 +90,7 @@ function Report({userID}){
                     </tbody>
                 </table>
             ) : (
-                <p>No activity logged yet</p>
+                <p>No activity logged yet, give me a few minutes to load please :')</p>
             )}
         </div>
     );
