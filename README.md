@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# Diego's Pomodoro
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to Diego's Pomodoro! This is a fully functional web application designed to enhance productivity by implementing the Pomodoro technique. Users can manage their Pomodoro sessions, view a detailed activity log, and track actions performed during the timer.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### Timer Modes
 
-### `npm start`
+- **Work Mode**: 25-minute focused work session.
+- **Short Break Mode**: 5-minute short break.
+- **Long Break Mode**: 15-minute long break.
+- Switch between modes seamlessly.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Personalized Activity Log
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Logs each action taken during the session.
+- Displays timestamps, events, modes, and durations.
+- Session-specific logs are tied to a unique user ID.
+- Logs are automatically cleared when the page is reloaded.
 
-### `npm test`
+### Personal Touch
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- The timer features an alarm sound, "Sonata di Fantaisie," a musical piece composed by the developer.
 
-### `npm run build`
+## Technologies Used
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Frontend
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **React.js**: Used for developing an interactive and responsive user interface.
+- **REST API**: Facilitates communication between the frontend and backend.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Backend
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- **Python & Flask**: Manages the backend logic and API endpoints.
+- **CORS**: Enables seamless communication between frontend and backend.
+- **User-Specific Logs**: Each user session generates a unique ID to maintain personalized logs.
 
 ### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- **Netlify**: Hosts the frontend.
+- **Flask**: Powers the backend on a separate server.
 
-### `npm run build` fails to minify
+## How It Works
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Users are assigned a unique ID upon visiting the site.
+2. Actions (e.g., starting, stopping, or resetting the timer) are logged with timestamps.
+3. Logs are displayed in the Activity Log tab for the duration of the session.
+4. Reloading the page clears all session data and starts a fresh session.
+
+## Installation
+
+### Prerequisites
+
+- Node.js and npm
+- Python 3.x
+
+### Frontend Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo/pomodoro.git
+   ```
+2. Navigate to the frontend directory:
+   ```bash
+   cd pomodoro/frontend
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the development server:
+   ```bash
+   npm start
+   ```
+
+### Backend Setup
+
+1. Navigate to the backend directory:
+   ```bash
+   cd pomodoro/backend
+   ```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Start the Flask server:
+   ```bash
+   python app.py
+   ```
+
+### Deployment
+
+- Deploy the frontend to Netlify and configure environment variables for the API.
+- Host the backend on a Flask-compatible server.
+
+## Future Enhancements
+
+- Add user authentication for persistent data across sessions.
+- Provide analytical insights based on user activity.
+- Enable customization of timer durations.
+
+## Feedback
+
+Feedback is always welcome! Feel free to share your thoughts or suggestions for improvement by contacting me or submitting an issue in the repository.
+
+---
+
+Thank you for exploring Diego's Pomodoro. Let's make productivity fun!
+
